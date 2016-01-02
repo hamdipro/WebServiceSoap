@@ -1,5 +1,4 @@
 <?php
-header('Content-type: text/xml');
 include "DataProvider/Calculator.php";
 include "DataProvider/Strings.php";
 // server
@@ -54,6 +53,9 @@ if(isset($_GET['operation'])){
 				$result = "undefied operation";
 
 }
+if($_GET['format']=="XML"){
+
+header('Content-type: text/xml');
 
 $doc = new DOMDocument();
 $root = $doc->createElement('result',null);
@@ -61,6 +63,12 @@ $doc->appendChild($root);
 $val = $doc->createElement('value',$result);
 $root->appendChild($val);
 echo $doc->saveXML();
+}else{
+	header('Content-type: text/json');
+
+	$arr = array('result'=>array('value'=>$result));
+	echo json_encode($arr);
+}
 
 
 
